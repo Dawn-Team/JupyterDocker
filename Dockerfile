@@ -1,21 +1,21 @@
 # Docker File for Jupyterhub used by Dawn-team members(https://dawn-team.github.io)
 # Will be invoked by dockerspawner
 # Technical Requirement:
-#     - [?] Nvidia Cards Support
-#     - [?] Python3 Support
+#     - [U] Nvidia Cards Support
+#     - [√] Python3 Support
 #     - [?] Notebook
-#     - [?] Numpy
+#     - [√] Numpy
 #     - [ ] Tensorflow GPU Support
 #     - [ ] Keras Support
 #     - [ ] Octave
 #     - [ ] Pytorch
 # 
 
-FROM nvidia/cuda:9.0-runtime
+FROM nvidia/cuda:9.0-cudnn7-runtime
 
 MAINTAINER Arvin Si.Chuan "arvinsc@foxmail.com"
 
-ENV REFRESHED_AT 2018-03-21 
+ENV REFRESHED_AT 2018-03-21-15:45:00 
 
 # Step #. Prepare demostic sources list.
 COPY ["sources/sources.list","/etc/apt/sources.list"]
@@ -26,10 +26,13 @@ RUN apt-get update -yqq
 # Step 2. Install whole `apt` support.
 RUN apt-get install -yqq \
     apt-utils 
- 
+
+# Step #. Enimilate problems caused by dialog missing
+RUN apt-get install -yqq \
+    dialog 
+
 # Step 3. Install system level packages.
 RUN apt-get install -yqq \
-    dialog \
     net-tools \
     git \
     openssh-server \
@@ -59,7 +62,7 @@ RUN pip3 install \
 RUN useradd -m jovyan
 ENV HOME=/home/jovyan
 WORKDIR $HOME
-USER jovyan
+USER root
 
 # TODO, debbuged to open
 # Command to run when being started.
