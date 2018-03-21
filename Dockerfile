@@ -3,6 +3,7 @@
 # Technical Requirement:
 #     - [?] Nvidia Cards Support
 #     - [?] Python3 Support
+#     - [?] Notebook
 #     - [?] Numpy
 #     - [ ] Tensorflow GPU Support
 #     - [ ] Keras Support
@@ -24,10 +25,11 @@ RUN apt-get update -yqq
 
 # Step 2. Install whole `apt` support.
 RUN apt-get install -yqq \
-    apt-utils \
+    apt-utils 
  
 # Step 3. Install system level packages.
 RUN apt-get install -yqq \
+    dialog \
     net-tools \
     git \
     openssh-server \
@@ -59,8 +61,9 @@ ENV HOME=/home/jovyan
 WORKDIR $HOME
 USER jovyan
 
+# TODO, debbuged to open
 # Command to run when being started.
-CMD ["jupyterhub-singleuser"]
+# CMD ["jupyterhub-singleuser"]
 
 # Labels
-LABEL version="1.0.0-alpha" location="Shanghai, China." role="Team Computaion Platform."
+LABEL version="1.0.0-SNAPSHOT" location="Shanghai, China." role="Team Computaion Platform."
