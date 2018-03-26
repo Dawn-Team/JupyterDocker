@@ -16,8 +16,8 @@ FROM tensorflow/tensorflow:1.6.0-gpu-py3
 
 MAINTAINER Arvin Si.Chuan "arvinsc@foxmail.com"
 
-ENV REFRESHED_AT 2018-03-24-20:00:00 
-ENV VERSION V1.0.0-SNAPSHOT
+ENV REFRESHED_AT 2018-03-26-09:00:00 
+ENV VERSION V1.0.0.alpha
 
 # Step #. Prepare demostic sources list.
 COPY ["sources/sources.list","/etc/apt/sources.list"]
