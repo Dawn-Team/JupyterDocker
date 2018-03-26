@@ -9,13 +9,14 @@
 #     - [ ] Keras Support
 #     - [ ] Octave
 #     - [ ] Pytorch
+#     - [ ] Bash Shell Client
 # 
 
 FROM tensorflow/tensorflow:1.6.0-gpu-py3
 
 MAINTAINER Arvin Si.Chuan "arvinsc@foxmail.com"
 
-ENV REFRESHED_AT 2018-03-22-15:20:00 
+ENV REFRESHED_AT 2018-03-24-20:00:00 
 ENV VERSION V1.0.0-SNAPSHOT
 
 # Step #. Prepare demostic sources list.
@@ -44,18 +45,20 @@ RUN apt-get install -yqq \
 RUN pip3 install pqi
 RUN pqi use tuna
 RUN pip3 install --upgrade pip
-RUN pip3 install --upgrade pip
 
 
 # Step 5. Install application level packages from python3-pip
 RUN pip3 install \
     babel \
+    conda \
     faker \ 
     h5py \
+    jupyterhub \
     matplotlib music21 \
-    notebook numpy  \
+    numpy  \
     pandas  pydub \
-    sklearn scipy 
+    sklearn scipy \
+    virtualenv
     
 # Waiting for basic tests till insall *** keras pytorch ***
 
@@ -65,11 +68,15 @@ RUN pip3 install \
 RUN useradd -m jovyan
 ENV HOME=/home/jovyan
 WORKDIR $HOME
-USER root
+USER jovyan
 
+COPY start-singleuser.sh /usr/local/bin/
+COPY start.sh /usr/local/bin/
+# RUN ["chmod","+x","/usr/local/bin/start-singleuser.sh"]
 # TODO, debbuged to open
 # Command to run when being started.
-# CMD ["jupyterhub-singleuser"]
+# ENTRYPOINT ["/bin/bash"]
+CMD ["start-notebook.sh"]
 
 # Labels
-LABEL version="1.0.0-SNAPSHOT" location="Shanghai, China." role="Team Computaion Platform."
+LABEL version="1.0.0.alpha" location="Shanghai, China." role="Team Computaion Platform."
