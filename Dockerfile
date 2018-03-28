@@ -6,7 +6,7 @@
 #     - [√] Notebook
 #     - [√] Numpy
 #     - [√] Tensorflow GPU Support
-#     - [ ] Keras Support
+#     - [√] Keras Support
 #     - [ ] Octave
 #     - [ ] Pytorch
 #     - [?] Bash Shell Client
@@ -16,8 +16,8 @@ FROM tensorflow/tensorflow:1.6.0-gpu-py3
 
 MAINTAINER Arvin Si.Chuan "arvinsc@foxmail.com"
 
-ENV REFRESHED_AT 2018-03-27-09:20:00 
-ENV VERSION V1.0.0.alpha
+ENV REFRESHED_AT 2018-03-28-22:00:00 
+ENV VERSION V1.0.0.rc
 
 # Step 1. Prepare demostic sources list.
 COPY ["sources/sources.list","/etc/apt/sources.list"]
@@ -55,6 +55,7 @@ RUN pip3 install \
     h5py \
     ipywidgets \
     jupyterhub jupyter_contrib_nbextensions \
+    keras \
     matplotlib music21 \
     numpy \
     pandas  pydub \
@@ -64,15 +65,15 @@ RUN pip3 install \
 # Waiting for basic tests till insall *** keras pytorch ***
 
 # Step 8. Change default shell
-# ln -sf /bin/bash /bin/sh
-# ln -sf /bin/sh.distrib /bin/sh  
-# ln -sf /usr/share/man/man1/sh.distrib.1.gz /usr/share/man/man1/sh.1.gz
+# RUN ln -sf /bin/bash /bin/sh
+# RUN ln -sf /bin/sh.distrib /bin/sh  
+# RUN ln -sf /usr/share/man/man1/sh.distrib.1.gz /usr/share/man/man1/sh.1.gz
 
 # Step 9. Enable nbextension, choose `--system` due to the docker env.
 RUN jupyter contrib nbextension install --system
 
 # Step A. create a user, since we don't want to run as root
-RUN useradd -m jovyan
+RUN useradd -m -s /bin/bash jovyan
 ENV HOME=/home/jovyan
 WORKDIR $HOME
 USER jovyan
@@ -82,9 +83,9 @@ COPY start-singleuser.sh /usr/local/bin/
 COPY start.sh /usr/local/bin/
 
 # Step C. Set entrypoint
-ENTRYPOINT ["/bin/bash"]
+# ENTRYPOINT ["/bin/bash"]
 CMD ["start-singleuser.sh"]
 
 
 # Step D. Set labels
-LABEL version="1.0.0.alpha" location="Shanghai, China." role="Team Computaion Platform."
+LABEL version="1.0.0.rc" location="Shanghai, China." role="Team Computaion Platform."
