@@ -16,8 +16,8 @@ FROM tensorflow/tensorflow:1.6.0-gpu-py3
 
 MAINTAINER Arvin Si.Chuan "arvinsc@foxmail.com"
 
-ENV REFRESHED_AT 2018-03-28-22:00:00 
-ENV VERSION V1.0.0.rc
+ENV REFRESHED_AT 2018-04-03-09:54:00 
+ENV VERSION V1.0.0
 
 # Step 1. Prepare demostic sources list.
 COPY ["sources/sources.list","/etc/apt/sources.list"]
@@ -36,7 +36,7 @@ RUN apt-get install -yqq \
 # Step 5. Install system level packages.
 RUN apt-get install -yqq \
     net-tools \
-    git \
+    git graphviz\
     openssh-server \
     python3 python3-pip \
     vim 
@@ -48,24 +48,13 @@ RUN pip3 install --upgrade pip
 
 
 # Step 7. Install application level packages from `python3-pip`
-RUN pip3 install \
-    babel \
-    conda \
-    faker \ 
-    h5py \
-    ipywidgets \
-    jupyterhub jupyter_contrib_nbextensions \
-    keras \
-    matplotlib music21 \
-    numpy \
-    pandas  pydub \
-    sklearn scipy \
-    virtualenv
+COPY requirement.txt /home/requirement.txt
+RUN pip3 install -r /home/requirement.txt
     
 # Waiting for basic tests till insall *** keras pytorch ***
 
 # Step 8. Change default shell
-# RUN ln -sf /bin/bash /bin/sh
+RUN ln -sf /bin/bash /bin/sh
 # RUN ln -sf /bin/sh.distrib /bin/sh  
 # RUN ln -sf /usr/share/man/man1/sh.distrib.1.gz /usr/share/man/man1/sh.1.gz
 
@@ -88,4 +77,4 @@ CMD ["start-singleuser.sh"]
 
 
 # Step D. Set labels
-LABEL version="1.0.0.rc" location="Shanghai, China." role="Team Computaion Platform."
+LABEL version="1.0.0" location="Shanghai, China." role="Team Computaion Platform."
