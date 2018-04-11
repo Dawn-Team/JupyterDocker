@@ -16,65 +16,75 @@ FROM tensorflow/tensorflow:1.6.0-gpu-py3
 
 MAINTAINER Arvin Si.Chuan "arvinsc@foxmail.com"
 
-ENV REFRESHED_AT 2018-04-03-09:54:00 
-ENV VERSION V1.0.0
+# Version Tag
+ENV REFRESHED_AT 2018-04-11-07:33:00 
+ENV VERSION V1.0.1-beta
+
+
 
 # Step 1. Prepare demostic sources list.
 COPY ["sources/sources.list","/etc/apt/sources.list"]
 
 # Step 2. Update apt repositories.
-RUN apt-get update -yqq
-
 # Step 3. Install whole `apt` support.
-RUN apt-get install -yqq \
-    apt-utils 
-
 # Step 4. Enimilate problems caused by dialog missing
-RUN apt-get install -yqq \
-    dialog 
-
 # Step 5. Install system level packages.
-RUN apt-get install -yqq \
+# Step 6. Clean Installation
+RUN \
+    DEBIAN_FRONTEND=noninteractive apt-get update -yqq && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -yqq \
+        apt-utils && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -yqq \
+    dialog  && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -yqq \
+    language-pack-en locales \
     net-tools \
     git graphviz\
     openssh-server \
     python3 python3-pip \
-    vim 
+    vim && \
+    DEBIAN_FRONTEND=noninteractive apt-mark hold cuda-cublas-9-0 && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y upgrade && \
+    DEBIAN_FRONTEND=noninteractive apt-get -y dist-upgrade &&\
+    DEBIAN_FRONTEND=noninteractive apt-get -y autoremove && \
+    DEBIAN_FRONTEND=noninteractive apt-get clean
     
-# Step 6. Install `python3-pip` and upgrade it to the latest
-RUN pip3 install pqi
-RUN pqi use tuna
-RUN pip3 install --upgrade pip
+    
+# Step 7. Update LOCALE
+ENV LANG en_US.UTF-8 
+RUN update-locale LANG="en_US.UTF-8" LANGUAGE
+
+# Step 8. Install `python3-pip` and upgrade it to the latest
+RUN pip3 install --no-cache-dir pqi &&\
+    pqi use tuna && \
+    pip3 install --no-cache-dir --upgrade  pip 
 
 
-# Step 7. Install application level packages from `python3-pip`
+# Step 9. Install application level packages from `python3-pip`
 COPY requirement.txt /home/requirement.txt
-RUN pip3 install -r /home/requirement.txt
+RUN pip3 install  --no-cache-dir -r  /home/requirement.txt  
     
-# Waiting for basic tests till insall *** keras pytorch ***
 
-# Step 8. Change default shell
+# Step A. Change default shell
 RUN ln -sf /bin/bash /bin/sh
-# RUN ln -sf /bin/sh.distrib /bin/sh  
-# RUN ln -sf /usr/share/man/man1/sh.distrib.1.gz /usr/share/man/man1/sh.1.gz
 
-# Step 9. Enable nbextension, choose `--system` due to the docker env.
+# Step B. Enable nbextension, choose `--system` due to the docker env.
 RUN jupyter contrib nbextension install --system
 
-# Step A. create a user, since we don't want to run as root
+# Step C. create a user, since we don't want to run as root
 RUN useradd -m -s /bin/bash jovyan
 ENV HOME=/home/jovyan
 WORKDIR $HOME
 USER jovyan
 
-# Step B. Copy startup shell scripts.
+# Step D. Copy startup shell scripts.
 COPY start-singleuser.sh /usr/local/bin/
 COPY start.sh /usr/local/bin/
 
-# Step C. Set entrypoint
+# Step E. Set entrypoint
 # ENTRYPOINT ["/bin/bash"]
 CMD ["start-singleuser.sh"]
 
 
-# Step D. Set labels
-LABEL version="1.0.0" location="Shanghai, China." role="Team Computaion Platform."
+# Step F. Set labels
+LABEL version="1.0.1-beta" location="Shanghai, China." role="Team Computaion Platform."
