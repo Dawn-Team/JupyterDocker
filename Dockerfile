@@ -17,8 +17,8 @@ FROM tensorflow/tensorflow:1.7.0-gpu-py3
 MAINTAINER Arvin Si.Chuan "arvinsc@foxmail.com"
 
 # Version Tag
-ENV REFRESHED_AT 2018-04-12-19:20:00 
-ENV VERSION V1.0.1-beta
+ENV REFRESHED_AT 2018-04-18-18:00:00 
+ENV VERSION V1.0.1-beta.4
 
 
 
@@ -37,6 +37,7 @@ RUN \
     DEBIAN_FRONTEND=noninteractive apt-get install -yqq \
     dialog  && \
     DEBIAN_FRONTEND=noninteractive apt-get install -yqq \
+    bash-completion \
     language-pack-en locales \
     net-tools \
     git graphviz\
@@ -62,7 +63,7 @@ RUN pip3 install --no-cache-dir --upgrade  pip && \
 
 # Step 9. Install application level packages from `python3-pip`
 COPY requirement.txt /home/requirement.txt
-RUN pip3 install  --no-cache-dir -r  /home/requirement.txt  
+RUN pip3 install  -r  /home/requirement.txt  
     
 
 # Step A. Change default shell
@@ -87,4 +88,4 @@ CMD ["start-singleuser.sh"]
 
 
 # Step F. Set labels
-LABEL version="1.0.1-beta" location="Shanghai, China." role="Team Computaion Platform."
+LABEL version="1.0.1-beta.4" location="Shanghai, China." role="Team Computaion Platform."
