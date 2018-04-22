@@ -17,8 +17,8 @@ FROM tensorflow/tensorflow:1.7.0-gpu-py3
 MAINTAINER Arvin Si.Chuan "arvinsc@foxmail.com"
 
 # Version Tag
-ENV REFRESHED_AT 2018-04-18-18:00:00 
-ENV VERSION V1.0.1-beta.4
+ENV REFRESHED_AT 2018-04-22-20:22:00 
+ENV VERSION V1.0.1-beta.5
 
 
 
@@ -51,8 +51,8 @@ RUN \
     
     
 # Step 7. Update LOCALE
-ENV LANG en_US.UTF-8 
-RUN update-locale LANG="en_US.UTF-8" LANGUAGE
+ENV LANG en_HK.UTF-8 
+RUN update-locale LANG="en_HK.UTF-8" LANGUAGE=en_HK:en
 
 # Step 8. Install `python3-pip` and upgrade it to the latest
 RUN pip3 install --no-cache-dir --upgrade  pip && \
@@ -88,4 +88,4 @@ CMD ["start-singleuser.sh"]
 
 
 # Step F. Set labels
-LABEL version="1.0.1-beta.4" location="Shanghai, China." role="Team Computaion Platform."
+LABEL version="1.0.1-beta.5" location="Shanghai, China." role="Team Computaion Platform."
