@@ -10,11 +10,14 @@ keras
 matplotlib
 music21
 numpy
+opencv-python
 pandas
 pillow
+progressbar2
 pydot
 pydub
 sklearn
 scipy
+tqdm
 virtualenv
 yapf
