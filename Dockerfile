@@ -43,6 +43,7 @@ RUN \
     git graphviz\
     openssh-server \
     python3 python3-pip \
+    tzdata \
     vim && \
     DEBIAN_FRONTEND=noninteractive apt-get -yqq upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get -yqq dist-upgrade &&\
@@ -50,9 +51,12 @@ RUN \
     DEBIAN_FRONTEND=noninteractive apt-get clean
     
     
-# Step 7. Update LOCALE
+# Step 7. Update LOCALE and TIMEZONE
 ENV LANG en_HK.UTF-8 
 RUN update-locale LANG="en_HK.UTF-8" LANGUAGE=en_HK:en
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone &&\
+    dpkg-reconfigure --frontend noninteractive tzdata
 
 # Step 8. Install `python3-pip` and upgrade it to the latest
 RUN pip3 install --no-cache-dir --upgrade  pip && \
