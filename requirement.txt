@@ -5,6 +5,7 @@ graphviz
 h5py
 ipywidgets
 jupyterhub
+jupyterlab
 jupyter_contrib_nbextensions
 keras
 matplotlib
