@@ -3,6 +3,7 @@ conda
 faker
 graphviz
 h5py
+imageio
 ipywidgets
 jupyterhub
 jupyterlab
