@@ -21,5 +21,6 @@ pydub
 sklearn
 scipy
 tqdm
+torchvision
 virtualenv
 yapf
