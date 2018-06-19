@@ -3,6 +3,7 @@ conda
 faker
 graphviz
 h5py
+imageio
 ipywidgets
 jupyterhub
 jupyterlab
@@ -20,5 +21,6 @@ pydub
 sklearn
 scipy
 tqdm
+torchvision
 virtualenv
 yapf
