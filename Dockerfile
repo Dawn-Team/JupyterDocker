@@ -19,25 +19,14 @@ MAINTAINER Arvin Si.Chuan "arvinsc@foxmail.com"
 # Version Tag
 # Env INFO
 ENV REFRESHED_AT 2018-06-15_15:20:00 
-ENV VERSION V1.1.2
+ENV VERSION V1.1.3
 ENV SHELL bash
 
 
 
 # Step 1. Prepare demostic sources list.
 COPY ["sources/sources.list","/etc/apt/"]
-# move cuda list to bak see later to restore
-RUN \
-    rm /etc/apt/sources.list.d/* && \
-    apt-get update && \
-    apt-get install apt-transport-https
-COPY ["sources/sources.list.d/*","/etc/apt/sources.list.d/"]
-RUN \
-   apt-get clean && \
-   rm -rf /etc/lib/apt/lists/* &&\
-   rm \
-       /etc/apt/sources.list.d/cuda-checkpoint.list \
-       /etc/apt/sources.list.d/nvidia-ml-checkpoint.list
+
 
 
 
@@ -50,6 +39,7 @@ RUN \
     DEBIAN_FRONTEND=noninteractive curl -sL https://deb.nodesource.com/setup_8.x | bash - && \ 
     DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:git-core/ppa && \
     DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:octave/stable && \
+    DEBIAN_FRONTEND=noninteractive apt-key update &&\
     DEBIAN_FRONTEND=noninteractive apt-get update -yqq && \
     DEBIAN_FRONTEND=noninteractive apt-get install -yqq \
         apt-utils && \
@@ -63,8 +53,7 @@ RUN \
         openssh-server \
         octave \
         python3 python3-pip \
-        tzdata \
-        vim && \
+        tzdata &&\
     DEBIAN_FRONTEND=noninteractive apt-get -yqq upgrade && \
     DEBIAN_FRONTEND=noninteractive apt-get -yqq dist-upgrade &&\
     DEBIAN_FRONTEND=noninteractive apt-get -yqq autoremove && \
@@ -118,4 +107,4 @@ CMD ["start-singleuser.sh"]
 
 
 # Step F. Set labels
-LABEL version="1.1.2" location="Shanghai, China." role="Team Computaion Platform."
+LABEL version="1.1.3" location="Shanghai, China." role="Team Computaion Platform."
