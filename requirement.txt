@@ -7,7 +7,9 @@ imageio
 ipywidgets
 jupyterhub
 jupyterlab
-jupyter_contrib_nbextensions
+jupyterlab_latex
+jupyterlab-git
+jupyterlab_hdf
 keras
 matplotlib
 music21
@@ -21,6 +23,7 @@ pydub
 sklearn
 scipy
 tqdm
+torch
 torchvision
 virtualenv
 yapf
